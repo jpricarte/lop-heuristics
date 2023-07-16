@@ -1,0 +1,3 @@
+[submodule "lop-instances"]
+	path = lop-instances
+	url = https://github.com/mrpritt/lop-instances.git
