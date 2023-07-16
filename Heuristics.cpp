@@ -3,7 +3,6 @@
 //
 
 #include "Heuristics.h"
-#include <random>
 #include <functional>
 
 double Heuristics::first_improvement(Lop &lop) {

@@ -18,7 +18,7 @@ struct Result {
 class Heuristics {
 public:
     static double first_improvement(Lop& lop);
-    static double  best_improvement(Lop& lop);
+    static double best_improvement(Lop& lop);
 
     static Result local_search(Lop &lop, const function<double(Lop &)>& get_neighbor);
 

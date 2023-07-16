@@ -18,9 +18,10 @@ Lop::Lop(const std::string& file_name) {
         cerr << "Lop::Lop: Unable to open " << file_name << endl;
         throw exception();
     }
-    // get instance _size
+    // initialize size and obj_value
     getline(file_stream, line);
     _size = stoi(line);
+    _obj_value = 0;
     // For each line, read the values in columns
     int row = 0;
     while(getline(file_stream, line)) {
@@ -41,7 +42,6 @@ Lop::Lop(const std::string& file_name) {
         _permutation.push_back(row);
         row++;
     }
-
 }
 
 ostream &operator<<(ostream &os, const Lop &lop) {
@@ -95,12 +95,12 @@ void Lop::make_shift(int index_bef, int index_aft) {
     if (index_bef < index_aft) {
         make_shift_col(index_bef, index_aft, RIGHT);
         make_shift_row(index_bef, index_aft, RIGHT);
-//        make_shift_permutation(index_bef, index_aft, RIGHT);
+        make_shift_permutation(index_bef, index_aft, RIGHT);
     }
     else if (index_bef > index_aft) {
         make_shift_col(index_bef, index_aft, LEFT);
         make_shift_row(index_bef, index_aft, LEFT);
-//        make_shift_permutation(index_bef, index_aft, LEFT);
+        make_shift_permutation(index_bef, index_aft, LEFT);
     }
 }
 
