@@ -16,11 +16,19 @@ struct Result {
 };
 
 class Heuristics {
+private:
+    vector<int> tabu_memory;
+    int tabu_time;
+    int iterations;
 public:
+    Heuristics(int instance_size, int time_proportion);
+
     static double first_improvement(Lop& lop);
     static double best_improvement(Lop& lop);
-
     static Result local_search(Lop &lop, const function<double(Lop &)>& get_neighbor);
+
+    double best_improvement_tabu(Lop& lop, bool randomize);
+    Result tabu_search(Lop &lop, bool randomize=false);
 
 };
 

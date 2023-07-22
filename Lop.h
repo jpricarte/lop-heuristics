@@ -40,6 +40,7 @@ public:
     double get_shift_cost(int index_bef, int index_aft);
     void  shift_and_update(int index_bef, int index_aft);
     void  shift_and_update(int index_bef, int index_aft, double delta);
+    void  rebuild_instance(std::vector<int> permutation);
 
     friend std::ostream &operator<<(std::ostream &os, const Lop &lop);
 };

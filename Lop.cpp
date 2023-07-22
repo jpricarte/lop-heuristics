@@ -156,3 +156,15 @@ void Lop::shift_and_update(int index_bef, int index_aft, double delta) {
     _obj_value += delta;
     make_shift(index_bef, index_aft);
 }
+
+void Lop::rebuild_instance(vector<int> permutation) {
+    vector<vector<double>> new_lop_table{};
+    for (int i : permutation) {
+        new_lop_table.emplace_back();
+        for (int j : permutation) {
+            new_lop_table.end()->push_back(lop_table[i][j]);
+        }
+    }
+    lop_table = new_lop_table;
+    _permutation = permutation;
+}
