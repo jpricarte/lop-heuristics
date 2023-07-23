@@ -11,6 +11,20 @@
 
 using namespace std;
 
+Lop::Lop(const vector<vector<double>>& instance) {
+    _permutation = vector<int>();
+    for (int i=0; i<instance.size(); i++) {
+        _permutation.push_back(i);
+        _lop_table.emplace_back(instance.size());
+        for(int j=0; j<instance.size(); j++) {
+            _lop_table[i][j] = instance[i][j];
+            if (i < j)
+                _obj_value += instance[i][j];
+        }
+    }
+    _size = int(instance.size());
+}
+
 Lop::Lop(const std::string& file_name) {
     string line;
     ifstream file_stream(file_name);
@@ -27,13 +41,13 @@ Lop::Lop(const std::string& file_name) {
     while(getline(file_stream, line)) {
         stringstream line_stream(line);
         // Add row
-        lop_table.emplace_back();
+        _lop_table.emplace_back();
         // Iterate over col
         int col = 0;
         string raw_val;
         while(line_stream >> raw_val) {
             double val = stod(raw_val);
-            lop_table[row].push_back(val);
+            _lop_table[row].push_back(val);
             if (col > row) {
                 _obj_value += val;
             }
@@ -45,7 +59,7 @@ Lop::Lop(const std::string& file_name) {
 }
 
 ostream &operator<<(ostream &os, const Lop &lop) {
-    for (auto& line : lop.lop_table) {
+    for (auto& line : lop._lop_table) {
         for (auto val : line) {
             os << val << " ";
         }
@@ -77,7 +91,7 @@ double Lop::get_shift_col_cost(int index_left, int index_right, Direction direct
     int c = (direction == RIGHT) ? index_left : index_right;
     double delta = 0.0;
     for (int r=index_left; r<index_right; r++) {
-        delta += lop_table[r][c];
+        delta += _lop_table[r][c];
     }
     return delta;
 }
@@ -86,7 +100,7 @@ double Lop::get_shift_row_cost(int index_left, int index_right, Direction direct
     int r = (direction == RIGHT) ? index_left : index_right;
     double delta = 0.0;
     for (int c=index_left; c < index_right; c++) {
-        delta += lop_table[r][c];
+        delta += _lop_table[r][c];
     }
     return delta;
 }
@@ -107,15 +121,15 @@ void Lop::make_shift(int index_bef, int index_aft) {
 void Lop::make_shift_col(int index_bef, int index_aft, Lop::Direction direction) {
     if (direction==RIGHT) {
         for (int row=0; row<_size; row++) {
-            auto begin = lop_table[row].begin()+index_bef;
-            auto end = lop_table[row].begin()+index_aft+1;
+            auto begin = _lop_table[row].begin() + index_bef;
+            auto end = _lop_table[row].begin() + index_aft + 1;
             rotate(begin, begin+1, end);
         }
     }
     else {
         for (int row=0; row<_size; row++) {
-            auto begin = lop_table[row].rend()-index_bef-1;
-            auto end = lop_table[row].rend()-index_aft;
+            auto begin = _lop_table[row].rend() - index_bef - 1;
+            auto end = _lop_table[row].rend() - index_aft;
             rotate(begin, begin+1, end);
         }
     }
@@ -123,13 +137,13 @@ void Lop::make_shift_col(int index_bef, int index_aft, Lop::Direction direction)
 
 void Lop::make_shift_row(int index_bef, int index_aft, Lop::Direction direction) {
     if (direction==RIGHT) {
-        auto begin = lop_table.begin()+index_bef;
-        auto end = lop_table.begin()+index_aft+1;
+        auto begin = _lop_table.begin() + index_bef;
+        auto end = _lop_table.begin() + index_aft + 1;
         rotate(begin, begin+1, end);
     }
     else {
-        auto begin = lop_table.rend()-index_bef-1;
-        auto end = lop_table.rend()-index_aft;
+        auto begin = _lop_table.rend() - index_bef - 1;
+        auto end = _lop_table.rend() - index_aft;
         rotate(begin, begin+1, end);
     }
 }
@@ -162,9 +176,9 @@ void Lop::rebuild_instance(vector<int> permutation) {
     for (int i : permutation) {
         new_lop_table.emplace_back();
         for (int j : permutation) {
-            new_lop_table.end()->push_back(lop_table[i][j]);
+            new_lop_table.end()->push_back(_lop_table[i][j]);
         }
     }
-    lop_table = new_lop_table;
+    _lop_table = new_lop_table;
     _permutation = permutation;
 }

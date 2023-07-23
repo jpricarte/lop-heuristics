@@ -18,7 +18,7 @@ private:
 
     int _size;
     std::vector<int> _permutation;
-    std::vector<std::vector<double>> lop_table;
+    std::vector<std::vector<double>> _lop_table;
     double _obj_value;
 
     double get_shift_right_cost(int index_bef, int index_aft);
@@ -32,10 +32,13 @@ private:
     void make_shift_permutation(int index_bef, int index_aft, Direction direction);
 
 public:
+    Lop(const std::vector<std::vector<double>>& instance);
     Lop(const std::string& file_name);
-    int size() const { return _size; }
-    double obj_value() const { return _obj_value; };
-    std::vector<int> permutation() const {return _permutation; };
+
+    inline int size() const { return _size; }
+    inline double obj_value() const { return _obj_value; };
+    inline std::vector<int> permutation() const { return _permutation; };
+    inline std::vector<std::vector<double>> const lop_table() { return _lop_table; };
 
     double get_shift_cost(int index_bef, int index_aft);
     void  shift_and_update(int index_bef, int index_aft);
