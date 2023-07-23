@@ -22,6 +22,7 @@ public:
     static std::vector<std::tuple<int, double>> calculate_sums(Lop& lop);
 
     static double greedy_algorithm(Lop& lop);
+    static double alpha_greedy_algorithm(Lop& lop, double alpha);
 };
 
 

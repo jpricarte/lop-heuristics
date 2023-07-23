@@ -66,3 +66,23 @@ double Constructive::greedy_algorithm(Lop &lop) {
     }
     return val;
 }
+
+double Constructive::alpha_greedy_algorithm(Lop &lop, double alpha) {
+    vector<int> permutation{};
+    auto sums = calculate_sums(lop);
+    double curr_val = 0;
+    int first_index = int(rand() % lop.size());
+    permutation.push_back(get<0>(sums[first_index]));
+    std::remove(sums.begin(), sums.end(), sums[first_index]);
+    double val = 0;
+    for (int i=0; i < lop.size(); i++) {
+        int available_elements = int(sums.size() * alpha);
+        int selected_index = (alpha==0) ? 0 : int(rand() % available_elements);
+        int element = get<0>(sums[selected_index]);
+        auto selected = best_position(lop, permutation, element);
+        permutation.insert(permutation.begin()+selected.position, element);
+        std::remove(sums.begin(), sums.end(), sums[selected_index]);
+        val += selected.delta;
+    }
+    return val;
+}
