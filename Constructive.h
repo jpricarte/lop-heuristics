@@ -23,6 +23,7 @@ public:
 
     static double greedy_algorithm(Lop& lop);
     static double alpha_greedy_algorithm(Lop& lop, double alpha);
+    static double grasp(Lop& lop, double alpha);
 };
 
 

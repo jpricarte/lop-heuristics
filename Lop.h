@@ -37,9 +37,11 @@ public:
 
     inline int size() const { return _size; }
     inline double obj_value() const { return _obj_value; };
+    inline void obj_value(double v) { _obj_value = v; };
     inline std::vector<int> permutation() const { return _permutation; };
     inline std::vector<std::vector<double>> const lop_table() { return _lop_table; };
 
+    double get_real_cost();
     double get_shift_cost(int index_bef, int index_aft);
     void  shift_and_update(int index_bef, int index_aft);
     void  shift_and_update(int index_bef, int index_aft, double delta);

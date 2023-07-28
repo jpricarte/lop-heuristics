@@ -12,10 +12,10 @@ int main(int argc, char* argv[]) {
         cerr << "usage: ./exec instance tabu_proportion" << endl;
         exit(1);
     }
-    srand(0xc0ff3e);
     Lop instance(argv[1]);
     Heuristics heuristics(instance.size(), stoi(argv[2]));
     // Fixed tenure
+    srand(0xc0ff3e);
     for (int i=0; i<NUM_ITERATIONS; i++) {
         Lop lop(instance);
         auto result = heuristics.tabu_search(lop);
@@ -26,6 +26,7 @@ int main(int argc, char* argv[]) {
              << result.obj_value << endl;
     }
     // Random Tenure
+    srand(0xc0ff3e);
     for (int i=0; i<NUM_ITERATIONS; i++) {
         Lop lop(instance);
         auto result = heuristics.tabu_search(lop, true);
@@ -35,12 +36,24 @@ int main(int argc, char* argv[]) {
              << i+1 << "\t"
              << result.obj_value << endl;
     }
-    // Local Search
-    for (int i=0; i<NUM_ITERATIONS; i++) {
+    // Local Search (Best Improvement)
+    srand(0xc0ff3e);
+    for (int i=0; i<3*NUM_ITERATIONS; i++) {
         Lop lop(instance);
         auto result = Heuristics::local_search(lop, Heuristics::best_improvement);
         cout << filesystem::path(argv[1]).filename() << "\t"
              << "BI\t"
+             << argv[2] << "\t"
+             << i+1 << "\t"
+             << result.obj_value << endl;
+    }
+    // Local Search (First Improvement)
+    srand(0xc0ff3e);
+    for (int i=0; i<3*NUM_ITERATIONS; i++) {
+        Lop lop(instance);
+        auto result = Heuristics::local_search(lop, Heuristics::best_improvement);
+        cout << filesystem::path(argv[1]).filename() << "\t"
+             << "FI\t"
              << argv[2] << "\t"
              << i+1 << "\t"
              << result.obj_value << endl;

@@ -68,6 +68,16 @@ ostream &operator<<(ostream &os, const Lop &lop) {
     return os;
 }
 
+double Lop::get_real_cost() {
+    double cost = 0.0;
+    for (int i=0; i<_size; i++) {
+        for (int j=i+1; j<_size; j++) {
+            cost += _lop_table[i][j];
+        }
+    }
+    return cost;
+}
+
 double Lop::get_shift_cost(int index_bef, int index_aft) {
     if (index_bef < index_aft)
         return get_shift_right_cost(index_bef, index_aft);
@@ -90,7 +100,7 @@ double Lop::get_shift_left_cost(int index_bef, int index_aft) {
 double Lop::get_shift_col_cost(int index_left, int index_right, Direction direction) {
     int c = (direction == RIGHT) ? index_left : index_right;
     double delta = 0.0;
-    for (int r=index_left; r<index_right; r++) {
+    for (int r=index_left; r<=index_right; r++) {
         delta += _lop_table[r][c];
     }
     return delta;
@@ -99,7 +109,7 @@ double Lop::get_shift_col_cost(int index_left, int index_right, Direction direct
 double Lop::get_shift_row_cost(int index_left, int index_right, Direction direction) {
     int r = (direction == RIGHT) ? index_left : index_right;
     double delta = 0.0;
-    for (int c=index_left; c < index_right; c++) {
+    for (int c=index_left; c<=index_right; c++) {
         delta += _lop_table[r][c];
     }
     return delta;
@@ -176,7 +186,7 @@ void Lop::rebuild_instance(vector<int> permutation) {
     for (int i : permutation) {
         new_lop_table.emplace_back();
         for (int j : permutation) {
-            new_lop_table.end()->push_back(_lop_table[i][j]);
+            new_lop_table.rbegin()->push_back(_lop_table[i][j]);
         }
     }
     _lop_table = new_lop_table;
