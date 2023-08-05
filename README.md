@@ -12,16 +12,3 @@ To download the used instances, download the project's submodule, using the comm
 git submodule update --init
 ```
 
-## TODO:
-
-Some important things was not implemented yet, such as:
-
-- [ ] Output the result as expected;
-- [ ] Implement the Tabu search;
-- [ ] A script/notebook to generate the analysis.
-
-Some other _"not-so-important"_ things must also be done,
-such as:
-
-- [ ] A Python interface for the Lop Class;
-- [ ] Analyze if we can use cuda to increase performance.

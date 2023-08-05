@@ -51,7 +51,7 @@ int main(int argc, char* argv[]) {
     srand(0xc0ff3e);
     for (int i=0; i<3*NUM_ITERATIONS; i++) {
         Lop lop(instance);
-        auto result = Heuristics::local_search(lop, Heuristics::best_improvement);
+        auto result = Heuristics::local_search(lop, Heuristics::first_improvement);
         cout << filesystem::path(argv[1]).filename() << "\t"
              << "FI\t"
              << argv[2] << "\t"
